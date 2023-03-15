@@ -1,0 +1,101 @@
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Mon premier site web" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <link rel="shortcut icon" href="images/logo.ico" />
+    <script src="https://kit.fontawesome.com/a65610437f.js" crossorigin="anonymous"></script>
+    <title>My Website</title>
+</head>
+
+<body>
+
+    <section id="hero">
+
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" width="50" />
+            </a>
+            <div class="nav-links mobile-menu">
+                <ul>
+                    <li class="active"><a href="https://github.com/Natixoo" target="_blank">Mon Github</a></li>
+                    <li><a href="">Actus</a></li>
+                    <li><a href="">Boutique</a></li>
+                    <li><a href="index.html" class="loginBtn">
+                            <i class="fa-solid fa-right-to-bracket fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <i class="fa-solid fa-bars fa-2x" id="menuBtn"></i>
+        </nav>
+
+        <div id="band">
+            <div id="content">
+                <img src="./images/logo.png" alt="Logo" width="150" />
+
+                <h1>My Website</h1>
+                <h2>Voici mon premier site web</h2>
+                <h3>Plus d'infos ci-dessous</h3>
+                <br /><br />
+                <a href="#">Se tenir informer</a>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="about">
+
+        <div id="about_img">
+            <img src="./images/about.jpg" alt="About Img" />
+        </div>
+
+        <div id="about_txt">
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit nam rem culpa! Nisi itaque possimus
+                temporibus cum sed quasi vel, molestiae enim tempora ex minus deserunt iure iste aperiam ad culpa,
+                explicabo reprehenderit, animi dicta aut doloribus repellat optio! Consequuntur laborum praesentium eos
+                quidem quo. A assumenda minus earum laboriosam sint minima eveniet nulla delectus velit tempora
+                recusandae modi quod, necessitatibus fugiat quo reiciendis expedita rem aliquam illo. Et eius, aliquam
+                consequatur iusto rem laudantium reiciendis voluptatibus saepe similique, ea inventore ab pariatur
+                doloribus officia? Omnis fuga inventore nulla reiciendis. Placeat nam expedita, quisquam molestias
+                eligendi natus modi voluptas veniam?</p>
+        </div>
+
+    </section>
+
+    <section id="services">
+
+        <div class="services_item">
+            <i class="fa-solid fa-code fa-4x"></i>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore ea maxime veniam consequatur iure.
+                Animi, illo enim expedita nemo dolores dolor tenetur repudiandae, ratione eligendi, molestias
+                voluptatibus impedit delectus temporibus!</p>
+        </div>
+        <div class="services_item">
+            <i class="fa-solid fa-gamepad fa-4x"></i>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore ea maxime veniam consequatur iure.
+                Animi, illo enim expedita nemo dolores dolor tenetur repudiandae, ratione eligendi, molestias
+                voluptatibus impedit delectus temporibus!</p>
+        </div>
+        <div class="services_item">
+            <i class="fa-brands fa-unity fa-4x"></i>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolore ea maxime veniam consequatur iure.
+                Animi, illo enim expedita nemo dolores dolor tenetur repudiandae, ratione eligendi, molestias
+                voluptatibus impedit delectus temporibus!</p>
+        </div>
+
+    </section>
+
+    <script>
+        const menuBtn = document.querySelector(".fa-solid fa-bars fa-2x")
+        const navLinks = document.querySelector(".nav-links")
+    
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-menu')
+        })
+    </script>
+</body>
+
+</html>

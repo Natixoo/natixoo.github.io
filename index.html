@@ -18,18 +18,14 @@
             <a href="index.html" class="logo">
                 <img src="images/logo.png" width="50" />
             </a>
-            <div class="nav-links mobile-menu">
+            <div class="nav-links">
                 <ul>
-                    <li class="active"><a href="https://github.com/Natixoo" target="_blank">Mon Github</a></li>
-                    <li><a href="">Actus</a></li>
-                    <li><a href="">Boutique</a></li>
-                    <li><a href="./php/index.php" class="loginBtn">
-                            <i class="fa-solid fa-right-to-bracket fa-2x"></i>
-                        </a>
-                    </li>
+                    <li class="pages"><a href="https://github.com/Natixoo" target="_blank">Mon Github</a></li>
+                    <li class="pages"><a href="./actus.html">Actus</a></li>
+                    <li class="pages"><a href="">Boutique</a></li>
+                    <li><a><i class="fa-solid fa-bars fa-2x" id="menuBtn"></i></a></li>
                 </ul>
             </div>
-            <i class="fa-solid fa-bars fa-2x" id="menuBtn"></i>
         </nav>
 
         <div id="band">
@@ -88,14 +84,7 @@
 
     </section>
 
-    <script>
-        const menuBtn = document.querySelector(".fa-solid fa-bars fa-2x")
-        const navLinks = document.querySelector(".nav-links")
-    
-        menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('mobile-menu')
-        })
-    </script>
+    <script src="index.js"></script>
 </body>
 
 </html>

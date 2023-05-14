@@ -88,7 +88,7 @@ nav {
 
 #content a {
     color: black;
-    background-color: rgba(251, 255, 0, 0.8);
+    background-color: #f26df9;
     padding: 20px;
     border-radius: 15px;
     font-family: 'Komikax';
@@ -96,7 +96,7 @@ nav {
 
 #content a:hover {
     color: white;
-    border: 1px solid yellow;
+    border: 1px solid #f26df9;
     background-color: rgba(0, 0, 255, 0);
 }
 
@@ -121,8 +121,10 @@ a:hover {
 
 #about {
     display: flex;
-    background-color: black;
+    background-color: #5158BB;
     color: white;
+    font-size: 25px;
+    font-weight: 200;
 }
 
 #about_img {
@@ -142,10 +144,11 @@ a:hover {
 
 #services {
     display: flex;
-    background-color: rgba(255, 255, 0, 0.85);
-    color: black;
+    background-color: 043565;
+    color: white;
     padding: 20px;
     text-align: center;
+    font-size: 25px;
 }
 
 .services_item p {

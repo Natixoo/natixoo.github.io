@@ -31,11 +31,17 @@
     box-sizing: border-box;
     align-items: center;
     font-size: 17px;
-    font-weight: 300;
 }
 
 .navbar a {
     color: white;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: red;
+    font-size: 20px;
+    text-decoration: underline;
 }
 
 .navbar .logo:hover {
@@ -88,7 +94,7 @@ nav {
 
 #content a {
     color: black;
-    background-color: #f26df9;
+    background-color: #1e91be;
     padding: 20px;
     border-radius: 15px;
     font-family: 'Komikax';
@@ -96,7 +102,7 @@ nav {
 
 #content a:hover {
     color: white;
-    border: 1px solid #f26df9;
+    border: 1px solid #1e91be;
     background-color: rgba(0, 0, 255, 0);
 }
 
@@ -119,32 +125,33 @@ a:hover {
     color: black;
 }
 
-#about {
-    display: flex;
-    background-color: #5158BB;
+#downloads {
+    display: column;
+    background-color: #045298;
     color: white;
     font-size: 25px;
     font-weight: 200;
+    text-align: center;
 }
 
-#about_img {
-    flex: 1;
-    padding: 20px;
+#downloads_btn a {
+    color: black;
+    background-color: #1e91be;
+    padding: 15px;
+    font-size: 15px;
+    border-radius: 15px;
+    font-family: 'Komikax';
 }
 
-#about_img img {
-    width: 100%;
-}
-
-#about_txt {
-    flex: 2;
-    padding: 20px;
-    text-align: justify;
+#downloads_btn a:hover {
+    color: white;
+    border: 2px solid #1e91be;
+    background-color: rgba(0, 0, 255, 0);
 }
 
 #services {
     display: flex;
-    background-color: 043565;
+    background-color: #02060c;
     color: white;
     padding: 20px;
     text-align: center;

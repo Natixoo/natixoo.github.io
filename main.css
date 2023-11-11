@@ -149,18 +149,17 @@ a:hover {
     background-color: rgba(0, 0, 255, 0);
 }
 
-#services {
-    display: flex;
-    background-color: #02060c;
-    color: white;
-    padding: 20px;
+#contact {
     text-align: center;
-    font-size: 25px;
+    background-color: #02060c;
 }
 
-.services_item p {
-    text-align: justify;
-    padding: 20px;
+#contact_txt {
+
+}
+
+#contact_form {
+
 }
 
 @media screen and (max-width: 500px) {

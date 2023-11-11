@@ -50,8 +50,8 @@
 
     <div id="downloads_btn">
 
-        <a href="https://dl.patchkit.net/d/2qqkhstkunldhn3plmx0x/direct" target="_blank">Télécharger (Windows)</a>
-        <br /><br /><br /><a href="https://dl.patchkit.net/d/3oqpc6kn955o3vzuvhkox/direct">Télécharger (MacOS)</a>
+        <a href="https://drive.google.com/uc?export=download&id=140boZhEXJ42BPuQ43dsG8LxUHOWeM2dd" target="_blank">Télécharger (Windows)</a>
+        <br /><br /><br /><a href="./404.html">Télécharger (MacOS) [INDISPONIBLE]</a>
         <br /><br /><br /><a href="./404.html">Télécharger (Linux) [INDISPONIBLE]</a>
         <br /><br />
 
@@ -69,6 +69,13 @@
             <textarea name="message" required></textarea><br>
             <input type="submit">
         </form>
+        <?php
+        if (isset($_POST['message'])) {
+            $retour = mail('destinataire@free.fr', 'Envoi depuis la page Contact', $_POST['message'], 'From: webmaster@monsite.fr' . "\r\n" . 'Reply-to: ' . $_POST['email']);
+            if($retour)
+                echo '<p>Votre message a bien été envoyé.</p>';
+        }
+        ?>
     </section>
 </body>
 

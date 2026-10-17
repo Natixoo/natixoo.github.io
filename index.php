@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="main.css">
     <link rel="shortcut icon" href="images/logo.ico" />
     <script src="https://kit.fontawesome.com/a65610437f.js" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <script src="index2.js"></script>
     <title>My Website</title>
 </head>
 

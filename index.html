@@ -1,75 +1,82 @@
+<!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Mon premier site web" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="main.css">
-    <link rel="shortcut icon" href="images/logo.ico" />
-    <script src="https://kit.fontawesome.com/a65610437f.js" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-    <title>My Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Tableau de Bord de Notes</title>
+    <script src="https://code.highcharts.com/highcharts.js"> </script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; margin: 40px auto; max-width: 900px; padding: 0 20px; }
+        h1, h2 { text-align: center; color: #2c3e50; }
+        .chart-container, .form-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        form { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center; }
+        select, input, button { padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
+        button { background-color: #2ecc71; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #27ae60; }
+    </style>
 </head>
-
 <body>
 
-    <section id="hero">
+    <h1>📊 Mon Tableau de Bord de Notes</h1>
 
-        <nav class="navbar">
-            <a href="index.html" class="logo">
-                <img src="images/logo.png" width="50" />
-            </a>
-            <div class="nav-links">
-                <ul>
-                    <li class="pages"><a href="https://github.com/Natixoo" target="_blank">Mon Github</a></li>
-                    <li class="pages"><a href="./actus.html">Actus</a></li>
-                    <li class="pages"><a href="./404.html">Boutique</a></li>
-                    <li><a><i class="fa-solid fa-bars fa-2x" id="menuBtn"></i></a></li>
-                </ul>
-            </div>
-        </nav>
+    <!-- GRAPHIQUES -->
+    <div class="chart-container"><div id="graphique-colles" style="width:100%; height:400px;"></div></div>
+    <div class="chart-container"><div id="graphique-ds" style="width:100%; height:400px;"></div></div>
 
-        <div id="band">
-            <div id="content">
-                <img src="./images/logo.png" alt="Logo" width="150" />
+    <script>
+        // Couleurs de vos matières
+        const couleursMatieres = {
+            "Physique": "#f39c12", "Chimie": "blue", "Maths": "grey",
+            "SII": "green", "Anglais": "purple", "Français": "pink"
+        };
 
-                <h1>My Website</h1>
-                <h2>Voici mon premier site web</h2>
-                <h3>Vous pourrez retrouver mes jeux ici</h3>
-                <br /><br />
-                <a href="#downloads">Accéder aux téléchargements</a>
-            </div>
-        </div>
+        let donneesNotes = {};
+        let chartColles, chartDS;
 
-    </section>
+        // Options partagées des graphiques Highcharts
+        const optionsPartagees = {
+            chart: { type: 'line' },
+            yAxis: { title: { text: 'Notes / 20' }, min: 0, max: 20, gridLineDashStyle: 'Dash' },
+            xAxis: { title: { text: 'Numéro de l\'évaluation' }, tickInterval: 1 },
+            plotOptions: { line: { marker: { enabled: true, radius: 5 }, lineWidth: 3 } },
+            tooltip: {
+                formatter: function() {
+                    const dataset = this.series.yData;
+                    const moyenne = (dataset.reduce((a, b) => a + b, 0) / dataset.length).toFixed(2);
+                    return `<b>${this.series.name}</b><br/>Évaluation n°${this.x} : <b>${this.y} / 20</b><br/><span style="color:red">Moyenne : ${moyenne}/20</span>`;
+                }
+            }
+        };
 
-    <section id="downloads">
+        // Fonction pour générer le format attendu par Highcharts à partir du JSON
+        function formaterSeries(typeEval) {
+            return Object.keys(donneesNotes[typeEval]).map(matiere => {
+                return {
+                    name: matiere,
+                    color: couleursMatieres[matiere],
+                    data: donneesNotes[typeEval][matiere]
+                };
+            });
+        }
 
-    <h3 id="download_txt">----- Téléchargements -----</h3>
-    <br />
+        // Chargement initial des données depuis le fichier JSON
+        fetch('donnees.json')
+            .then(response => response.json())
+            .then(data => {
+                donneesNotes = data;
 
-    <div id="downloads_btn">
+                // Initialisation du graphique des Colles
+                chartColles = Highcharts.chart('graphique-colles', Highcharts.merge(optionsPartagees, {
+                    title: { text: 'Suivi des Colles' },
+                    series: formaterSeries('colles')
+                }));
 
-        <a href="https://dl.patchkit.net/d/2qqkhstkunldhn3plmx0x/direct" target="_blank">Télécharger (Windows)</a>
-        <br /><br /><br /><a href="https://dl.patchkit.net/d/3oqpc6kn955o3vzuvhkox/direct">Télécharger (MacOS)</a>
-        <br /><br /><br /><a href="./404.html">Télécharger (Linux) [INDISPONIBLE]</a>
-        <br /><br />
-
-    </div>
-
-    </section>
-
-    <section id="contact">
-        <h3 id="contact_txt">----- Contact -----</h3>
-        <br />
-        <form method="post" id="contact_form">
-            <label>Votre email</label>
-            <input type="email" name="email" required><br>
-            <label>Message</label>
-            <textarea name="message" required></textarea><br>
-            <input type="submit">
-        </form>
-    </section>
+                // Initialisation du graphique des DS
+                chartDS = Highcharts.chart('graphique-ds', Highcharts.merge(optionsPartagees, {
+                    title: { text: 'Suivi des Devoirs Surveillés (DS)' },
+                    series: formaterSeries('ds')
+                }));
+            });
+    </script>
 </body>
-
 </html>

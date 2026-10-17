@@ -22,21 +22,36 @@
     <!-- GRAPHIQUES -->
     <div class="chart-container"><div id="graphique-colles" style="width:100%; height:400px;"></div></div>
     <div class="chart-container"><div id="graphique-ds" style="width:100%; height:400px;"></div></div>
+    <div class="chart-container"><div id="graphique-interros" style="width:100%; height:400px;"></div></div>
 
     <script>
         // Couleurs de vos matières
         const couleursMatieres = {
             "Physique": "#f39c12", "Chimie": "blue", "Maths": "grey",
-            "SII": "green", "Anglais": "purple", "Français": "pink"
+            "SII": "green", "Anglais": "purple", "Français": "pink", "Informatique": "red"
         };
 
         let donneesNotes = {};
-        let chartColles, chartDS;
+        let chartColles, chartDS, chartInterros;
 
         // Options partagées des graphiques Highcharts
         const optionsPartagees = {
             chart: { type: 'line' },
             yAxis: { title: { text: 'Notes / 20' }, min: 0, max: 20, gridLineDashStyle: 'Dash' },
+            xAxis: { title: { text: 'Numéro de l\'évaluation' }, tickInterval: 1 },
+            plotOptions: { line: { marker: { enabled: true, radius: 5 }, lineWidth: 3 } },
+            tooltip: {
+                formatter: function() {
+                    const dataset = this.series.yData;
+                    const moyenne = (dataset.reduce((a, b) => a + b, 0) / dataset.length).toFixed(2);
+                    return `<b>${this.series.name}</b><br/>Évaluation n°${this.x} : <b>${this.y} / 20</b><br/><span style="color:red">Moyenne : ${moyenne}/20</span>`;
+                }
+            }
+        };
+
+        const interros = {
+            chart: { type: 'line' },
+            yAxis: { title: { text: 'Notes / 10' }, min: 0, max: 10, gridLineDashStyle: 'Dash' },
             xAxis: { title: { text: 'Numéro de l\'évaluation' }, tickInterval: 1 },
             plotOptions: { line: { marker: { enabled: true, radius: 5 }, lineWidth: 3 } },
             tooltip: {
@@ -75,6 +90,11 @@
                 chartDS = Highcharts.chart('graphique-ds', Highcharts.merge(optionsPartagees, {
                     title: { text: 'Suivi des Devoirs Surveillés (DS)' },
                     series: formaterSeries('ds')
+                }));
+
+                chartInterros = Highcharts.chart('graphique-interros', Highcharts.merge(interros, {
+                    title: { text: 'Suivi des Interrogations' },
+                    series: formaterSeries('interros')
                 }));
             });
     </script>

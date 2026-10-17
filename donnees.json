@@ -14,5 +14,14 @@
     "SII": [],
     "Anglais": [],
     "Français": []
+  },
+  "interros": {
+    "Physique": [5, 10, 8, 5, 4, 6],
+    "Chimie": [],
+    "Maths": [],
+    "SII": [],
+    "Anglais": [],
+    "Français": [],
+    "Informatique": [9]
   }
 }

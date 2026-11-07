@@ -1,9 +1,9 @@
 {
   "colles": {
-    "Physique": [15],
+    "Physique": [15, 11],
     "Chimie": [15, 12],
     "Maths": [12, 17, 14],
-    "SII": [17],
+    "SII": [17, 13],
     "Anglais": [5, 9, 11],
     "Français": []
   },
@@ -11,7 +11,7 @@
     "Physique": [10.2, 15],
     "Chimie": [13],
     "Maths": [12.5, 10.9],
-    "SII": [],
+    "SII": [12.6],
     "Anglais": [],
     "Français": []
   },

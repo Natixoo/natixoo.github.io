@@ -1,0 +1,98 @@
+ :root {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --primary: #2563eb;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --border: #e2e8f0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 { text-align: center; color: var(--primary); margin-bottom: 24px; }
+
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    /* Grille des 4 Comptes */
+    .accounts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .account-card {
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 5px solid var(--primary);
+    }
+    .account-card h3 { margin: 0 0 5px 0; font-size: 1rem; }
+    .account-card .balance { font-size: 1.4rem; font-weight: bold; }
+
+    /* Graphiques */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+    }
+
+    /* Formulaire */
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+
+    label { font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 4px; }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-secondary { background: #64748b; }
+    .btn-danger { background: var(--danger); }
+
+    /* Tableau */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: #f8fafc; }
+    .type-recette { color: var(--success); font-weight: bold; }
+    .type-depense { color: var(--danger); font-weight: bold; }
+
+    /* Actions JSON */
+    .json-actions { display: flex; gap: 10px; justify-content: flex-end; margin-bottom: 15px; }
+    .json-actions button { width: auto; font-size: 0.85rem; padding: 6px 12px; }

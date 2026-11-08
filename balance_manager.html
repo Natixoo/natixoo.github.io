@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Comptes</title>
+
+  <!-- Script Highcharts -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <link rel="stylesheet" href="balance.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Boutons Sauvegarde / Restauration Fichier JSON -->
+  <div class="json-actions">
+    <button onclick="exportJSON()" class="btn-secondary">💾 Sauvegarder dans un fichier JSON</button>
+    <button onclick="document.getElementById('importFile').click()" class="btn-secondary">📂 Importer un fichier JSON</button>
+    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
+  </div>
+
+  <h1>Mon Suivi Bancaire</h1>
+
+  <!-- 1. VUE DES 4 COMPTES -->
+  <div class="card">
+    <h2>Mes Comptes</h2>
+    <div class="accounts-grid" id="accountsGrid"></div>
+  </div>
+
+  <!-- 2. FORMULAIRE D'AJOUT -->
+  <div class="card">
+    <h2>Ajouter une opération</h2>
+    <form id="transactionForm" onsubmit="addTransaction(event)">
+      <div>
+        <label>Compte</label>
+        <select id="accountSelect"></select>
+      </div>
+      <div>
+        <label>Type</label>
+        <select id="typeSelect">
+          <option value="depense">Dépense (-)</option>
+          <option value="recette">Rentrée (+)</option>
+        </select>
+      </div>
+      <div>
+        <label>Montant (€)</label>
+        <input type="number" id="amountInput" step="0.01" min="0.01" required placeholder="ex: 45.50">
+      </div>
+      <div>
+        <label>Catégorie</label>
+        <select id="categorySelect">
+          <option value="Alimentation">Alimentation</option>
+          <option value="Logement">Logement</option>
+          <option value="Transports">Transports</option>
+          <option value="Loisirs">Loisirs</option>
+          <option value="Salaire">Salaire / Revenus</option>
+          <option value="Cadeau">Cadeau</option>
+          <option value="Fournitures">Fournitures</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div>
+        <label>Description</label>
+        <input type="text" id="descInput" placeholder="ex: Courses">
+      </div>
+      <div>
+        <button type="submit">Valider</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 3. GRAPHIQUES HIGHCHARTS -->
+  <div class="charts-grid">
+    <div class="card">
+      <div id="pieChart"></div>
+    </div>
+    <div class="card">
+      <div id="categoryChart"></div>
+    </div>
+  </div>
+
+  <!-- 4. HISTORIQUE -->
+  <div class="card">
+    <h2>Historique des Opérations</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Compte</th>
+          <th>Catégorie</th>
+          <th>Description</th>
+          <th>Montant</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+// --- 1. DONNÉES PAR DÉFAUT (Si rien n'est sauvegardé) ---
+const defaultData = {
+  accounts: [
+    { id: 1, name: "Compte Perso", balance: 0 },
+    { id: 2, name: "Economies", balance: 0 },
+    { id: 3, name: "Compte Maman", balance: 0 },
+    { id: 4, name: "Cadeaux", balance: 0 }
+  ],
+  transactions: []
+};
+
+// Charge les données depuis le localStorage ou prend par défaut
+let state = JSON.parse(localStorage.getItem('bankData')) || defaultData;
+
+// Highcharts Instances
+let pieChart, categoryChart;
+
+// --- 2. SAUVEGARDE EN LOCAL ---
+function saveData() {
+  localStorage.setItem('bankData', JSON.stringify(state));
+  updateUI();
+}
+
+// --- 3. MISE À JOUR DE L'INTERFACE ---
+function updateUI() {
+  renderAccounts();
+  renderHistory();
+  updateCharts();
+}
+
+function renderAccounts() {
+  const grid = document.getElementById('accountsGrid');
+  const select = document.getElementById('accountSelect');
+
+  grid.innerHTML = '';
+  select.innerHTML = '';
+
+  state.accounts.forEach(acc => {
+    // Affiche la carte du compte
+    grid.innerHTML += `
+      <div class="account-card">
+        <h3>${acc.name}</h3>
+        <div class="balance">${acc.balance.toFixed(2)} €</div>
+      </div>
+    `;
+    // Rempli le menu déroulant du formulaire
+    select.innerHTML += `<option value="${acc.id}">${acc.name}</option>`;
+  });
+}
+
+function renderHistory() {
+  const tbody = document.getElementById('historyTable');
+  tbody.innerHTML = '';
+
+  state.transactions.slice().reverse().forEach((t, index) => {
+    const originalIndex = state.transactions.length - 1 - index;
+    const acc = state.accounts.find(a => a.id === t.accountId);
+    const isRecette = t.type === 'recette';
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${t.date}</td>
+        <td>${acc ? acc.name : 'Inconnu'}</td>
+        <td>${t.category}</td>
+        <td>${t.description}</td>
+        <td class="${isRecette ? 'type-recette' : 'type-depense'}">
+          ${isRecette ? '+' : '-'}${t.amount.toFixed(2)} €
+        </td>
+        <td>
+          <button class="btn-danger" style="padding: 2px 8px; font-size:0.8rem;" onclick="deleteTransaction(${originalIndex})">✕</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// --- 4. GESTION DES TRANSACTIONS ---
+function addTransaction(e) {
+  e.preventDefault();
+
+  const accountId = parseInt(document.getElementById('accountSelect').value);
+  const type = document.getElementById('typeSelect').value;
+  const amount = parseFloat(document.getElementById('amountInput').value);
+  const category = document.getElementById('categorySelect').value;
+  const description = document.getElementById('descInput').value;
+
+  // Modifie le solde du compte
+  const account = state.accounts.find(a => a.id === accountId);
+  if (type === 'recette') {
+    account.balance += amount;
+  } else {
+    account.balance -= amount;
+  }
+
+  // Enregistre l'opération
+  state.transactions.push({
+    date: new Date().toLocaleDateString('fr-FR'),
+    accountId,
+    type,
+    amount,
+    category,
+    description
+  });
+
+  document.getElementById('transactionForm').reset();
+  saveData();
+}
+
+function deleteTransaction(index) {
+  const t = state.transactions[index];
+  const account = state.accounts.find(a => a.id === t.accountId);
+
+  // Annule le montant sur le compte
+  if (account) {
+    if (t.type === 'recette') account.balance -= t.amount;
+    else account.balance += t.amount;
+  }
+
+  state.transactions.splice(index, 1);
+  saveData();
+}
+
+// --- 5. INITIALISATION DES GRAPHIQUES HIGHCHARTS ---
+function initCharts() {
+  // Graphique 1: Camembert des Comptes
+  pieChart = Highcharts.chart('pieChart', {
+    chart: { type: 'pie' },
+    title: { text: 'Répartition du Solde Total' },
+    series: [{ name: 'Solde', data: [] }]
+  });
+
+  // Graphique 2: Dépenses par Catégorie
+  categoryChart = Highcharts.chart('categoryChart', {
+    chart: { type: 'column' },
+    title: { text: 'Dépenses par Catégorie' },
+    xAxis: { categories: [] },
+    yAxis: { title: { text: 'Montant (€)' } },
+    series: [{ name: 'Dépenses', data: [], color: '#dc2626' }]
+  });
+
+  updateCharts();
+}
+
+function updateCharts() {
+  if (!pieChart || !categoryChart) return;
+
+  // Données Camembert
+  const pieData = state.accounts.map(a => ({ name: a.name, y: Math.max(0, a.balance) }));
+  pieChart.series[0].setData(pieData);
+
+  // Données Catégories (Uniquement les dépenses)
+  const categories = {};
+  state.transactions.forEach(t => {
+    if (t.type === 'depense') {
+      categories[t.category] = (categories[t.category] || 0) + t.amount;
+    }
+  });
+
+  const catNames = Object.keys(categories);
+  const catValues = Object.values(categories);
+
+  categoryChart.xAxis[0].setCategories(catNames);
+  categoryChart.series[0].setData(catValues);
+}
+
+// --- 6. IMPORT / EXPORT FICHIER JSON ---
+function exportJSON() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `comptes_bancaires_${new Date().toISOString().slice(0,10)}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+}
+
+function importJSON(event) {
+  const fileReader = new FileReader();
+  fileReader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      if (importedData.accounts && importedData.transactions) {
+        state = importedData;
+        saveData();
+        alert('Données importées avec succès !');
+      } else {
+        alert('Format de fichier JSON invalide.');
+      }
+    } catch (err) {
+      alert('Erreur lors de la lecture du fichier.');
+    }
+  };
+  fileReader.readAsText(event.target.files[0]);
+}
+
+// Lancement au chargement de la page
+updateUI();
+initCharts();
+</script>
+
+</body>
+</html>

@@ -1,25 +1,25 @@
 {
   "colles": {
-    "Physique": [15, 11],
-    "Chimie": [15, 12],
-    "Maths": [14, 17, 14],
+    "Physique": [15, 11, 13],
+    "Chimie": [15, 12, 15],
+    "Maths": [14, 17, 14, 15],
     "SII": [17, 13],
-    "Anglais": [5, 9, 11],
+    "Anglais": [5, 9, 11, 7],
     "Français": []
   },
   "ds": {
-    "Physique": [10.2, 15],
+    "Physique": [10.2, 15.4, 6.5],
     "Chimie": [13],
-    "Maths": [12.5, 10.9],
+    "Maths": [12.5, 10.9, 6.8],
     "SII": [12.6],
-    "Anglais": [],
-    "Français": []
+    "Anglais": [9.25],
+    "Français": [9]
   },
   "interros": {
-    "Physique": [5, 10, 8, 5, 4, 6],
+    "Physique": [5, 10, 8, 5, 4, 6, 3, 8],
     "Chimie": [],
     "Maths": [],
-    "SII": [],
+    "SII": [9.25],
     "Anglais": [],
     "Français": [],
     "Informatique": [9]
